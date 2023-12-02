@@ -1,0 +1,189 @@
+{
+	"name": "dataflow1_method2_type2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable97",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable98",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable99",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable100",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "IND"
+				},
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "Existingrows"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          SIDC as integer,",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer,",
+				"          IND as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
+				"source2 select(mapColumn(",
+				"          lkpSIDC = SIDC,",
+				"          lkpeID = eID,",
+				"          lkpeName = eName,",
+				"          lkpMgr = Mgr,",
+				"          lkpJob = Job,",
+				"          lkpSalary = Salary,",
+				"          lkpComm = Comm,",
+				"          lkphDate = hDate,",
+				"          lkpdID = dID,",
+				"          lkpIND = IND",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"source1 derive(IND = 1) ~> IND",
+				"source1, select1 lookup(eID == lkpeID,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 filter(!isNull(lkpeID)) ~> Existingrows",
+				"Existingrows select(mapColumn(",
+				"          lkpSIDC,",
+				"          lkpeID,",
+				"          lkpeName,",
+				"          lkpMgr,",
+				"          lkpJob,",
+				"          lkpSalary,",
+				"          lkpComm,",
+				"          lkphDate,",
+				"          lkpdID,",
+				"          lkpIND",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 derive(lkpIND = 0) ~> derivedColumn1",
+				"derivedColumn1 alterRow(updateIf(true())) ~> alterRow1",
+				"IND sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SIDC as integer,",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer,",
+				"          IND as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 2,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SIDC as integer,",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer,",
+				"          IND as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['SIDC'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          SIDC = lkpSIDC,",
+				"          eID = lkpeID,",
+				"          eName = lkpeName,",
+				"          Mgr = lkpMgr,",
+				"          Job = lkpJob,",
+				"          Salary = lkpSalary,",
+				"          Comm = lkpComm,",
+				"          hDate = lkphDate,",
+				"          dID = lkpdID,",
+				"          IND = lkpIND",
+				"     )) ~> sink2"
+			]
+		}
+	}
+}

@@ -1,0 +1,57 @@
+{
+	"name": "DelimitedText33",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1forflatfile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "[dbo].[cust].csv",
+				"container": "cn3"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "OrderDate",
+				"type": "String"
+			},
+			{
+				"name": "Region",
+				"type": "String"
+			},
+			{
+				"name": "Rep",
+				"type": "String"
+			},
+			{
+				"name": "Item",
+				"type": "String"
+			},
+			{
+				"name": "Units",
+				"type": "String"
+			},
+			{
+				"name": "Unit Cost Price",
+				"type": "String"
+			},
+			{
+				"name": "Unit sell Price",
+				"type": "String"
+			},
+			{
+				"name": "Total Cost Price",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

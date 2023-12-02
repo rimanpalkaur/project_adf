@@ -1,0 +1,28 @@
+{
+	"name": "AzureSqlTable48",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "targetwithoutparameter",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "tablename",
+				"type": "varchar"
+			},
+			{
+				"name": "watermarkvalue",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "watermarktab"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

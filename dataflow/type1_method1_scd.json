@@ -1,0 +1,129 @@
+{
+	"name": "type1_method1_scd",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable65",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable66",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable67",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable68",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "exists1"
+				},
+				{
+					"name": "alterRow1"
+				},
+				{
+					"name": "exists2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
+				"source1, source2 exists(source1@eID == source2@eID,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> exists1",
+				"exists1 alterRow(updateIf(true())) ~> alterRow1",
+				"source1, source2 exists(source1@eID == source2@eID,",
+				"     negate:true,",
+				"     broadcast: 'auto')~> exists2",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['eID'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"exists2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+			]
+		}
+	}
+}

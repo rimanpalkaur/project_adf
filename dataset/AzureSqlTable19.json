@@ -1,0 +1,17 @@
+{
+	"name": "AzureSqlTable19",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabasetarget",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": "salesagregate"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

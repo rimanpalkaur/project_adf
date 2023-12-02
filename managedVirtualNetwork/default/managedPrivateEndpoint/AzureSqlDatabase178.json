@@ -1,0 +1,7 @@
+{
+	"name": "AzureSqlDatabase178",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/b3feb9f6-301c-4fee-aa94-f97885a4a7af/resourceGroups/trainingData/providers/Microsoft.Sql/servers/rimandb",
+		"groupId": "sqlServer"
+	}
+}

@@ -1,0 +1,124 @@
+{
+	"name": "dataflow1_derivedcolumn",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable7",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText14",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText15",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText16",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "split1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 derive(Salesgroup = case(\r",
+				"    eID>=1&&eID<=3,'group1sales',\r",
+				"    eID>=3&&eID<=6,'group2sales',\r",
+				"    'group3sales'\r",
+				")) ~> derivedColumn1",
+				"derivedColumn1 split(Salesgroup=='group1sales',",
+				"     Salesgroup=='group2sales',",
+				"     disjoint: false) ~> split1@(group1, group2, group3)",
+				"split1@group1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['derivedgroup1'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          eID,",
+				"          eName,",
+				"          Mgr,",
+				"          Job,",
+				"          Salary,",
+				"          Comm,",
+				"          hDate,",
+				"          dID,",
+				"          Salesgroup",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink1",
+				"split1@group2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['derivedgroup2'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          eID,",
+				"          eName,",
+				"          Mgr,",
+				"          Job,",
+				"          Salary,",
+				"          Comm,",
+				"          hDate,",
+				"          dID,",
+				"          Salesgroup",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink2",
+				"split1@group3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['derivedgroup3'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          eID,",
+				"          eName,",
+				"          Mgr,",
+				"          Job,",
+				"          Salary,",
+				"          Comm,",
+				"          hDate,",
+				"          dID,",
+				"          Salesgroup",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink3"
+			]
+		}
+	}
+}

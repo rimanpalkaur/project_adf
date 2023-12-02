@@ -1,0 +1,13 @@
+{
+	"name": "AzureSqlTable54",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "targetwithoutparameter",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,65 @@
+{
+	"name": "AzureSqlTable74",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "targetwithoutparameter",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IND",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "eID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "eName",
+				"type": "varchar"
+			},
+			{
+				"name": "Mgr",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Job",
+				"type": "varchar"
+			},
+			{
+				"name": "Salary",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Comm",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "hDate",
+				"type": "nvarchar"
+			},
+			{
+				"name": "dID",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Target_Emp"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

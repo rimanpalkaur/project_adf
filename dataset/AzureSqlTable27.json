@@ -1,0 +1,33 @@
+{
+	"name": "AzureSqlTable27",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "targetwithoutparameter",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CustomerID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OnlineOrderFlag",
+				"type": "bit"
+			},
+			{
+				"name": "TotalDue",
+				"type": "decimal",
+				"precision": 29,
+				"scale": 4
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "aggregatetable"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

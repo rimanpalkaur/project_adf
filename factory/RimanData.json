@@ -1,0 +1,9 @@
+{
+	"name": "RimanData",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "962449f2-54c8-4ea1-bebf-b82feb747edc",
+		"tenantId": "6763436a-633c-4ec7-b87c-bc9a363e5c12"
+	}
+}

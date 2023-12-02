@@ -1,0 +1,111 @@
+{
+	"name": "tablecomparison",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable33",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable34",
+						"type": "DatasetReference"
+					},
+					"name": "target"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable35",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> target",
+				"source1, select1 lookup(eID == eIDlkp,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 filter(isNull(eIDlkp)) ~> filter1",
+				"target select(mapColumn(",
+				"          eIDlkp = eID,",
+				"          eNamelkp = eName,",
+				"          Mgrlkp = Mgr,",
+				"          Joblkp = Job,",
+				"          Salarylkp = Salary,",
+				"          Commlkp = Comm,",
+				"          hDatelkp = hDate,",
+				"          dIDlkp = dID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"filter1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"name": "SqlServerTable9",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"table": "salesheader1"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

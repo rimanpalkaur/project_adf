@@ -1,0 +1,17 @@
+{
+	"name": "AzureSqlTable29",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabasesource",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": "looktransformationtable"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

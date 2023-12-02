@@ -1,0 +1,16 @@
+{
+	"name": "AzureSqlTable52",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "targetwithoutparameter",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"table": "salesheadtar"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

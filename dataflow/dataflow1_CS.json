@@ -1,0 +1,113 @@
+{
+	"name": "dataflow1_CS",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable6",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText11",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText12",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText13",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          eID as integer,",
+				"          eName as string,",
+				"          Mgr as integer,",
+				"          Job as string,",
+				"          Salary as integer,",
+				"          Comm as integer,",
+				"          hDate as string,",
+				"          dID as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 split(eID>=1&&eID<=3,",
+				"     eID>=3&&eID<=3,",
+				"     disjoint: false) ~> split1@(group1, group2, group3)",
+				"split1@group1 sink(allowSchemaDrift: true,",
+				"     validateSchema: true,",
+				"     partitionFileNames:['Group1employees'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          eID,",
+				"          eName,",
+				"          Mgr,",
+				"          Job,",
+				"          Salary,",
+				"          Comm,",
+				"          hDate,",
+				"          dID",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink1",
+				"split1@group2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['group2employess'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          eID,",
+				"          eName,",
+				"          Mgr,",
+				"          Job,",
+				"          Salary,",
+				"          Comm,",
+				"          hDate,",
+				"          dID",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink2",
+				"split1@group3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['group3employees'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          eID,",
+				"          eName,",
+				"          Mgr,",
+				"          Job,",
+				"          Salary,",
+				"          Comm,",
+				"          hDate,",
+				"          dID",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink3"
+			]
+		}
+	}
+}

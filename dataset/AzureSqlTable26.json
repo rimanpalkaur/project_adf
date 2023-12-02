@@ -1,0 +1,17 @@
+{
+	"name": "AzureSqlTable26",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "targetwithoutparameter",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": "joinedtable"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
